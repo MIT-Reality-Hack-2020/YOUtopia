@@ -151,10 +151,10 @@ public class SucessCSVAgent : MonoBehaviour
 
 
         float emotionSinValue = sinFactor * emotionCurve.Evaluate(Time.time);
-        float HueSinValue = Mathf.Clamp(emotionSinValue, Hmin, Hmax);
-        float SaturationSinValue = Mathf.Clamp(emotionSinValue, Smin, Smax);
-        float AudioSinValue = Mathf.Clamp(emotionSinValue, aMin, 1.0f);
-        float BrightnessSinValue = Mathf.Clamp(emotionSinValue, Vmin, Vmax);
+        float HueSinValue = Mathf.Clamp(sinFactor * emotionCurve.Evaluate(Time.time), Hmin, Hmax);
+        float SaturationSinValue = Mathf.Clamp(sinFactor * emotionCurve.Evaluate(Time.time), Smin, Smax);
+        float AudioSinValue = Mathf.Clamp(sinFactor * emotionCurve.Evaluate(Time.time), aMin, 1.0f);
+        float BrightnessSinValue = Mathf.Clamp(sinFactor * emotionCurve.Evaluate(Time.time), Vmin, Vmax);
 
         //Mathf.Clamp((Mathf.Sin(Time.time * emotionSpeedMultiplier)) * emotionCurve.Evaluate(Time.time), xMin, xMax), H_Min, H_Max);
         //float SaturationSinValue = Mathf.Clamp((Mathf.Sin(Time.time * emotionSpeedMultiplier)) * dataCurve2.Evaluate(Time.time), xMin, xMax), S_Min, S_Max);
@@ -163,6 +163,7 @@ public class SucessCSVAgent : MonoBehaviour
 
         //transform float into vector
         Vector3 emotionVector = Vector3.one * (emotionSinValue);
+        risingStep = Mathf.Clamp(sinFactor * emotionCurve.Evaluate(Time.time * emotionSpeedMultiplier), 0.0f, stepMax);
 
         if (changeColor == true)
         {
@@ -191,7 +192,7 @@ public class SucessCSVAgent : MonoBehaviour
 
         if (position == true)
         {
-            risingStep = Mathf.Clamp(emotionCurve.Evaluate(Time.time * emotionSpeedMultiplier), 0.0f, stepMax);
+            
             transform.position = Vector3.up * risingStep + new Vector3(transform.position.x, 0, transform.position.z);
         }
 
